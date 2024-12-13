@@ -4,9 +4,9 @@ import streamlit as st
 import altair as alt
 import matplotlib.pyplot as plt
 import pymongo
-import constants
 from wordcloud import WordCloud, STOPWORDS
 
+print(st.secrets.get("MONGO_USERNAME"))
 
 # Prepare the DataFrame for financial news data
 def prepare_news_data(cursor):
@@ -229,9 +229,9 @@ supported_topics = ["Blockchain", "Earnings", "IPO", "Mergers & Acquisitions", "
                     "Real Estate & Construction", "Retail & Wholesale", "Technology"]
 
 # URI for the MongoDB cluster that is used for data storage
-database_uri = 'mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority'.format(constants.MONGO_USERNAME,
-                                                                               constants.MONGO_PASSWORD,
-                                                                               constants.MONGO_CLUSTER)
+database_uri = 'mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority'.format(st.secrets.get("MONGO_USERNAME"),
+                                                                               st.secrets.get("MONGO_PASSWORD"),
+                                                                               st.secrets.get("MONGO_CLUSTER"))
 
 # Try clause for connecting to the database
 try:

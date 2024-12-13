@@ -1,13 +1,13 @@
 # Import the relevant libraries
-import constants
+import streamlit as st
 import requests
 import time
 from pymongo import MongoClient
 
 # URI for the MongoDB cluster that is used for data storage
-database_uri = 'mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority'.format(constants.MONGO_USERNAME,
-                                                                               constants.MONGO_PASSWORD,
-                                                                               constants.MONGO_CLUSTER)
+database_uri = 'mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority'.format(st.secrets.get("MONGO_USERNAME"),
+                                                                               st.secrets.get("MONGO_PASSWORD"),
+                                                                               st.secrets.get("MONGO_CLUSTER"))
 
 # While loop to set the one-week period for data collection. We check if the script is active in this time period and
 # once a week's worth of data is collected, the script terminates. The time period here is 2nd December 2024 to 10th
@@ -34,7 +34,7 @@ while time.time() < 1733848300:
             # minutes and the extended hours trade information is set to false. We only collect data for the stock price
             # of Apple when the market is open.
             ticker_url = ('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=5min&'
-                          'apikey={0}&extended_hours=false'.format(constants.ALPHA_API_KEY))
+                          'apikey={0}&extended_hours=false'.format(st.secrets.get("ALPHA_API_KEY")))
             ticker_response = requests.get(ticker_url)
             ticker_data = ticker_response.json()
 
@@ -49,7 +49,7 @@ while time.time() < 1733848300:
             # Send a GET request to the Alpha Vantage API to retrieve AAPL news data. The API endpoint returns the most
             # current 50 news articles that are associated with the company
             news_url = 'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey={0}'.format(
-                constants.ALPHA_API_KEY)
+                st.secrets.get("ALPHA_API_KEY"))
             news_response = requests.get(news_url)
             news_data = news_response.json()
 
