@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 import pymongo
 from wordcloud import WordCloud, STOPWORDS
 
-print(st.secrets.get("MONGO_USERNAME"))
-
 # Prepare the DataFrame for financial news data
 def prepare_news_data(cursor):
 
